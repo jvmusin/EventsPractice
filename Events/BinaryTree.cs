@@ -25,12 +25,7 @@ namespace Events
             return Add(null, ref root, value);
         }
 
-        public bool Contains(T value)
-        {
-            if (value == null)
-                throw new ArgumentNullException(nameof(value));
-            return Contains(root, value);
-        }
+        public bool Contains(T value) => Contains(root, value);
 
         private bool Add(Node parent, ref Node current, T value)
         {
@@ -58,30 +53,8 @@ namespace Events
             return false;
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
-
-        public IEnumerator<T> GetEnumerator()
-        {
-//            return EnumerateTree(root).GetEnumerator();
-            return new TreeEnumerator(this);
-        }
-
-        private IEnumerable<T> EnumerateTree(Node current)
-        {
-            while (true)
-            {
-                if (current == null)
-                    yield break;
-
-                foreach (var value in EnumerateTree(current.Left))
-                    yield return value;
-                yield return current.Value;
-                current = current.Right;
-            }
-        }
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        public IEnumerator<T> GetEnumerator() => new TreeEnumerator(this);
 
         private class Node
         {

@@ -67,23 +67,16 @@ namespace Events
         }
 
         [Test]
-        public void FailOnRequestingElement_WhenElementIsNull()
-        {
-            var tree = new BinaryTree<object>();
-            Action requesting = () => tree.Contains(null);
-            requesting.ShouldThrow<Exception>();
-        }
-
-        [Test]
         public void EnumerateValuesCorrectly()
         {
-            foreach (var value in new[]
+            var treeVales = new[]
             {
                 8,
                 4, 12,
                 2, 6, 10, 14,
                 1, 3, 5, 7, 9, 11, 13, 15
-            })
+            };
+            foreach (var value in treeVales)
                 tree.Add(value);
             Console.WriteLine(tree.ToList());
         }
