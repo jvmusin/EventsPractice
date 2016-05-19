@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Events.Interfaces;
 
-namespace Events
+namespace Events.Implementations
 {
     public class BinaryTree<T> : IBinaryTree<T>
     {
-        public BinaryTreeNode<T> root;
+        internal BinaryTreeNode<T> root;
         public IBinaryTreeNode<T> Root => root;
 
         public IComparer<T> Comparer { get; }
@@ -57,6 +58,34 @@ namespace Events
                 if (cmp > 0) current = current.Right;
             }
             return false;
+        }
+
+        public T this[int index] {
+            get
+            {
+                if (index < 0 || index >= root.Size)
+                    throw new ArgumentOutOfRangeException(nameof(index));
+                return GetElementAt(index, root); 
+            }
+        }
+
+        private static T GetElementAt(int index, BinaryTreeNode<T> current)
+        {
+            while (true)
+            {
+                var currentIndex = current.Left?.Size ?? 0;
+                if (currentIndex == index) return current.Value;
+
+                if (index < currentIndex)
+                {
+                    current = current.Left;
+                }
+                else
+                {
+                    index -= currentIndex + 1;
+                    current = current.Right;
+                }
+            }
         }
 
 

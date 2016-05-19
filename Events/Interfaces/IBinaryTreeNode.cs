@@ -1,6 +1,6 @@
-﻿namespace Events
+﻿namespace Events.Interfaces
 {
-    public interface IBinaryTreeNode<T>
+    public interface IBinaryTreeNode<out T>
     {
         T Value { get; }
         IBinaryTreeNode<T> LeftNode { get; }

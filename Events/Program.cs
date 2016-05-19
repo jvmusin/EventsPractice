@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Events.Implementations;
 
 namespace Events
 {
@@ -22,6 +23,8 @@ namespace Events
                 tree.Add(value);
             foreach (var value in tree)
                 Console.WriteLine("Node number {0}", value);
+            foreach (var index in Enumerable.Range(0, treeVales.Length))
+                Console.WriteLine(tree[index]);
         }
     }
 }

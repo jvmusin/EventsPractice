@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Events.Implementations;
 
 namespace Events
 {
@@ -31,7 +32,7 @@ namespace Events
                 return GoToMinNodeAndSaveIt();
             }
 
-            if (lastNode.RightNode != null && !visited.Contains(lastNode.Right))
+            if (lastNode.Right != null && !visited.Contains(lastNode.Right))
             {
                 lastNode = lastNode.Right;
                 return GoToMinNodeAndSaveIt();

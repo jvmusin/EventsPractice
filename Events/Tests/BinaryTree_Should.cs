@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Events.Tests;
+using Events.Implementations;
 using FluentAssertions;
 using NUnit.Framework;
 
-namespace Events
+namespace Events.Tests
 {
     [TestFixture]
     public class BinaryTree_Should : TestBase

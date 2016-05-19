@@ -1,4 +1,6 @@
-﻿namespace Events
+﻿using Events.Interfaces;
+
+namespace Events.Implementations
 {
     public class BinaryTreeNode<T> : IBinaryTreeNode<T>
     {
