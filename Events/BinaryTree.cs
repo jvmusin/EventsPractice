@@ -120,6 +120,12 @@ namespace Events
                 return true;
             }
 
+            private bool GoToMinNodeAndSaveIt()
+            {
+                GoToMinNode();
+                return SaveCurrentNode();
+            }
+
             private void GoToMinNode()
             {
                 while (lastNode.Left != null)
@@ -130,12 +136,6 @@ namespace Events
             {
                 while (lastNode != null && visited.Contains(lastNode))
                     lastNode = lastNode.Parent;
-            }
-
-            private bool GoToMinNodeAndSaveIt()
-            {
-                GoToMinNode();
-                return SaveCurrentNode();
             }
 
             public void Reset()
