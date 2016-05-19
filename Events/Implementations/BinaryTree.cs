@@ -65,7 +65,7 @@ namespace Events.Implementations
             {
                 if (index < 0 || index >= root.Size)
                     throw new ArgumentOutOfRangeException(nameof(index));
-                return GetElementAt(index, root); 
+                return GetElementAt(index, root);
             }
         }
 

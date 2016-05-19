@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Events.Implementations;
 
 namespace Events
@@ -13,7 +10,7 @@ namespace Events
         {
             var tree = new BinaryTree<int>();
             var treeVales = new[]
-   {
+            {
                 8,
                 4, 12,
                 2, 6, 10, 14,

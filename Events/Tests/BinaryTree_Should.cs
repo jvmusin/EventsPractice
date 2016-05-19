@@ -18,6 +18,8 @@ namespace Events.Tests
             tree = new BinaryTree<int>();
         }
 
+        #region Main tests
+
         [Test]
         public void AddOneItemCorrectly()
         {
@@ -66,18 +68,14 @@ namespace Events.Tests
             adding.ShouldThrow<Exception>();
         }
 
+        #endregion
+
+        #region Enumerating tests
+
         [Test]
         public void EnumerateValuesCorrectly()
         {
-            var treeVales = new[]
-            {
-                8,
-                4, 12,
-                2, 6, 10, 14,
-                1, 3, 5, 7, 9, 11, 13, 15
-            };
-            foreach (var value in treeVales)
-                tree.Add(value);
+            BuildSampleTree(tree);
             Console.WriteLine(tree.ToList());
         }
 
@@ -98,6 +96,41 @@ namespace Events.Tests
                 tree.Add(element);
             tree.Should().BeInAscendingOrder();
         }
+
+        #endregion
+
+        #region By index accessing tests
+
+        [Test]
+        public void FailOnAcessByIndex_WhenIndexIsNegative()
+        {
+            foreach (var x in GetRandomDistinctInts(100))
+                tree.Add(x);
+            Action access = () => { var t = tree[Rnd.Next(int.MinValue, 0)]; };
+            access.ShouldThrow<Exception>();
+        }
+
+        [Test]
+        public void FailOnAccessByIndex_WhenIndexOutOfRange()
+        {
+            foreach (var x in GetRandomDistinctInts(100))
+                tree.Add(x);
+            Action access = () => { var t = tree[Rnd.Next(100, int.MaxValue)]; };
+            access.ShouldThrow<Exception>();
+        }
+
+        [Test]
+        public void ReturnElementsByIndexCorrectly()
+        {
+            BuildSampleTree(tree);
+            var sortedValues = SampleTreeValues.OrderBy(x => x).ToList();
+            foreach (var index in Enumerable.Range(0, sortedValues.Count))
+                tree[index].Should().Be(sortedValues[index]);
+        }
+
+        #endregion
+
+        #region Preformance tests
 
         [Test, Timeout(6000), TestCaseSource(nameof(PerfrormanceTestCases))]
         public void WorkFast_WithManyRandomElements(IList<int> elements)
@@ -122,5 +155,7 @@ namespace Events.Tests
                 yield return new TestCaseData(GetRandomDistinctInts((int)4e5).ToList());
             }
         }
+
+        #endregion
     }
 }
