@@ -5,7 +5,7 @@ using Events.Interfaces;
 
 namespace Events.Implementations
 {
-    internal class BinaryTree<T> : IBinaryTree<T>
+    public class BinaryTree<T> : IBinaryTree<T>
     {
         internal BinaryTreeNode<T> root;
         public IBinaryTreeNode<T> Root => root;
@@ -23,31 +23,32 @@ namespace Events.Implementations
         {
         }
 
-        public bool Add(T value)
+        public virtual bool Add(T value)
         {
             if (value == null)
                 throw new ArgumentNullException(nameof(value));
-            return Add(null, ref root, value);
+            bool added;
+            root = Add(root, value, out added);
+            return added;
         }
 
         public bool Contains(T value) => Contains(root, value);
 
-        private bool Add(BinaryTreeNode<T> parent, ref BinaryTreeNode<T> current, T value)
+        private BinaryTreeNode<T> Add(BinaryTreeNode<T> current, T value, out bool added)
         {
             if (current == null)
             {
-                current = new BinaryTreeNode<T>(parent, value);
-                return true;
+                added = true;
+                return new BinaryTreeNode<T>(value);
             }
 
             var cmp = Comparer.Compare(value, current.Value);
-            if (cmp == 0) return false;
+            if (cmp < 0) current.left = Add(current.left, value, out added);
+            else if (cmp > 0) current.right = Add(current.right, value, out added);
+            else added = false;
 
-            var added = false;
-            if (cmp < 0) added = Add(current, ref current.left, value);
-            if (cmp > 0) added = Add(current, ref current.right, value);
-            current.UpdateSize();
-            return added;
+            current.Update();
+            return current;
         }
 
         private bool Contains(BinaryTreeNode<T> current, T value)
@@ -61,18 +62,19 @@ namespace Events.Implementations
             }
             return false;
         }
-
+        
         public T this[int index] {
             get
             {
                 if (index < 0 || index >= root.Size)
                     throw new ArgumentOutOfRangeException(nameof(index));
-                return GetElementAt(index, root);
+                return GetElementAt(index);
             }
         }
 
-        private static T GetElementAt(int index, BinaryTreeNode<T> current)
+        private T GetElementAt(int index)
         {
+            var current = root;
             while (true)
             {
                 var currentIndex = current.left?.Size ?? 0;

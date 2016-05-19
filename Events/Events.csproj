@@ -59,6 +59,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AVLTreeExtensions.cs" />
+    <Compile Include="Implementations\AVLTree.cs" />
     <Compile Include="Implementations\BinaryTreeEnumerator.cs" />
     <Compile Include="Implementations\BinaryTreeNode.cs" />
     <Compile Include="Interfaces\IBinaryTreeNode.cs" />

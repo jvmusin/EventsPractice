@@ -1,19 +1,22 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Events.Interfaces;
 
 namespace Events.Implementations
 {
-    internal class BinaryTreeEnumerator<T> : IEnumerator<T>
+    public class BinaryTreeEnumerator<T> : IEnumerator<T>
     {
-        private readonly BinaryTree<T> tree;
-        private BinaryTreeNode<T> lastNode;
+        private readonly IBinaryTree<T> tree; 
+        private IBinaryTreeNode<T> lastNode;
         private bool finished;
-        private readonly ISet<BinaryTreeNode<T>> visited;
+        private readonly ISet<IBinaryTreeNode<T>> visited;
+        private readonly Stack<IBinaryTreeNode<T>> path; 
 
-        public BinaryTreeEnumerator(BinaryTree<T> tree)
+        public BinaryTreeEnumerator(IBinaryTree<T> tree)
         {
             this.tree = tree;
-            visited = new HashSet<BinaryTreeNode<T>>();
+            visited = new HashSet<IBinaryTreeNode<T>>();
+            path = new Stack<IBinaryTreeNode<T>>();
         }
 
         public void Dispose()
@@ -27,13 +30,13 @@ namespace Events.Implementations
 
             if (lastNode == null)
             {
-                lastNode = tree.root;
+                lastNode = tree.Root;
                 return GoToMinNodeAndSaveIt();
             }
 
-            if (lastNode.right != null && !visited.Contains(lastNode.right))
+            if (lastNode.Right != null && !visited.Contains(lastNode.Right))
             {
-                lastNode = lastNode.right;
+                lastNode = lastNode.Right;
                 return GoToMinNodeAndSaveIt();
             }
 
@@ -61,14 +64,22 @@ namespace Events.Implementations
 
         private void GoToMinNode()
         {
+            path.Push(lastNode);
             while (lastNode.Left != null)
-                lastNode = lastNode.left;
+                path.Push(lastNode = lastNode.Left);
         }
 
         private void GoToFirstUnusedParent()
         {
-            while (lastNode != null && visited.Contains(lastNode))
-                lastNode = lastNode.parent;
+//            while (lastNode != null && visited.Contains(lastNode))
+//                lastNode = lastNode.Parent;
+            while (visited.Contains(lastNode) && path.Count > 1)
+            {
+                path.Pop();
+                lastNode = path.Peek();
+            }
+            if (visited.Contains(lastNode))
+                lastNode = null;
         }
 
         public void Reset()

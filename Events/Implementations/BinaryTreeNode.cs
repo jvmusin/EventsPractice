@@ -1,4 +1,5 @@
-﻿using Events.Interfaces;
+﻿using System;
+using Events.Interfaces;
 
 namespace Events.Implementations
 {
@@ -6,27 +7,34 @@ namespace Events.Implementations
     {
         public T Value { get; }
         public int Size { get; private set; }
-
-        internal BinaryTreeNode<T> parent;
+        public int Height { get; private set; }
+        
         internal BinaryTreeNode<T> left;
         internal BinaryTreeNode<T> right;
-
-        public IBinaryTreeNode<T> Parent => parent; 
+        
         public IBinaryTreeNode<T> Left => left;
         public IBinaryTreeNode<T> Right => right;
 
-        public BinaryTreeNode(BinaryTreeNode<T> parent, T value)
+        public BinaryTreeNode(T value)
         {
-            this.parent = parent;
             Value = value;
             Size = 1;
         }
 
         public void UpdateSize()
         {
-            Size = 1;
-            if (left != null) Size += left.Size;
-            if (right != null) Size += right.Size;
+            Size = 1 + left.GetSize() + right.GetSize();
+        }
+
+        public void UpdateHeight()
+        {
+            Height = Math.Max(left.GetHeight(), right.GetHeight()) + 1;
+        }
+
+        public void Update()
+        {
+            UpdateSize();
+            UpdateHeight();
         }
     }
 }

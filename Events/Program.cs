@@ -22,6 +22,7 @@ namespace Events
                 Console.WriteLine("Node number {0}", value);
             foreach (var index in Enumerable.Range(0, treeVales.Length))
                 Console.WriteLine(tree[index]);
+            Console.WriteLine(tree.root.Height);
         }
     }
 }
