@@ -2,21 +2,22 @@
 
 namespace Events.Implementations
 {
-    public class BinaryTreeNode<T> : IBinaryTreeNode<T>
+    internal class BinaryTreeNode<T> : IBinaryTreeNode<T>
     {
         public T Value { get; }
         public int Size { get; private set; }
 
-        public BinaryTreeNode<T> Parent;
-        public BinaryTreeNode<T> Left;
-        public BinaryTreeNode<T> Right;
+        internal BinaryTreeNode<T> parent;
+        internal BinaryTreeNode<T> left;
+        internal BinaryTreeNode<T> right;
 
-        public IBinaryTreeNode<T> LeftNode => Left;
-        public IBinaryTreeNode<T> RightNode => Right;
+        public IBinaryTreeNode<T> Parent => parent; 
+        public IBinaryTreeNode<T> Left => left;
+        public IBinaryTreeNode<T> Right => right;
 
         public BinaryTreeNode(BinaryTreeNode<T> parent, T value)
         {
-            Parent = parent;
+            this.parent = parent;
             Value = value;
             Size = 1;
         }
@@ -24,8 +25,8 @@ namespace Events.Implementations
         public void UpdateSize()
         {
             Size = 1;
-            if (Left != null) Size += Left.Size;
-            if (Right != null) Size += Right.Size;
+            if (left != null) Size += left.Size;
+            if (right != null) Size += right.Size;
         }
     }
 }

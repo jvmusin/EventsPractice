@@ -1,10 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using Events.Implementations;
 
-namespace Events
+namespace Events.Implementations
 {
-    public class BinaryTreeEnumerator<T> : IEnumerator<T>
+    internal class BinaryTreeEnumerator<T> : IEnumerator<T>
     {
         private readonly BinaryTree<T> tree;
         private BinaryTreeNode<T> lastNode;
@@ -32,9 +31,9 @@ namespace Events
                 return GoToMinNodeAndSaveIt();
             }
 
-            if (lastNode.Right != null && !visited.Contains(lastNode.Right))
+            if (lastNode.right != null && !visited.Contains(lastNode.right))
             {
-                lastNode = lastNode.Right;
+                lastNode = lastNode.right;
                 return GoToMinNodeAndSaveIt();
             }
 
@@ -62,14 +61,14 @@ namespace Events
 
         private void GoToMinNode()
         {
-            while (lastNode.LeftNode != null)
-                lastNode = lastNode.Left;
+            while (lastNode.Left != null)
+                lastNode = lastNode.left;
         }
 
         private void GoToFirstUnusedParent()
         {
             while (lastNode != null && visited.Contains(lastNode))
-                lastNode = lastNode.Parent;
+                lastNode = lastNode.parent;
         }
 
         public void Reset()

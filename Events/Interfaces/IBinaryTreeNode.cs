@@ -3,7 +3,8 @@
     public interface IBinaryTreeNode<out T>
     {
         T Value { get; }
-        IBinaryTreeNode<T> LeftNode { get; }
-        IBinaryTreeNode<T> RightNode { get; } 
+        IBinaryTreeNode<T> Parent { get; }
+        IBinaryTreeNode<T> Left { get; }
+        IBinaryTreeNode<T> Right { get; } 
     }
 }

@@ -59,7 +59,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BinaryTreeEnumerator.cs" />
+    <Compile Include="Implementations\BinaryTreeEnumerator.cs" />
     <Compile Include="Implementations\BinaryTreeNode.cs" />
     <Compile Include="Interfaces\IBinaryTreeNode.cs" />
     <Compile Include="RandomExtensions.cs" />

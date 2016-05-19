@@ -5,7 +5,7 @@ using Events.Interfaces;
 
 namespace Events.Implementations
 {
-    public class BinaryTree<T> : IBinaryTree<T>
+    internal class BinaryTree<T> : IBinaryTree<T>
     {
         internal BinaryTreeNode<T> root;
         public IBinaryTreeNode<T> Root => root;
@@ -14,6 +14,8 @@ namespace Events.Implementations
 
         public BinaryTree(IComparer<T> comparer)
         {
+            if (comparer == null)
+                throw new ArgumentNullException(nameof(comparer));
             Comparer = comparer;
         }
 
@@ -42,8 +44,8 @@ namespace Events.Implementations
             if (cmp == 0) return false;
 
             var added = false;
-            if (cmp < 0) added = Add(current, ref current.Left, value);
-            if (cmp > 0) added = Add(current, ref current.Right, value);
+            if (cmp < 0) added = Add(current, ref current.left, value);
+            if (cmp > 0) added = Add(current, ref current.right, value);
             current.UpdateSize();
             return added;
         }
@@ -54,8 +56,8 @@ namespace Events.Implementations
             {
                 var cmp = Comparer.Compare(value, current.Value);
                 if (cmp == 0) return true;
-                if (cmp < 0) current = current.Left;
-                if (cmp > 0) current = current.Right;
+                if (cmp < 0) current = current.left;
+                if (cmp > 0) current = current.right;
             }
             return false;
         }
@@ -73,17 +75,17 @@ namespace Events.Implementations
         {
             while (true)
             {
-                var currentIndex = current.Left?.Size ?? 0;
+                var currentIndex = current.left?.Size ?? 0;
                 if (currentIndex == index) return current.Value;
 
                 if (index < currentIndex)
                 {
-                    current = current.Left;
+                    current = current.left;
                 }
                 else
                 {
                     index -= currentIndex + 1;
-                    current = current.Right;
+                    current = current.right;
                 }
             }
         }
