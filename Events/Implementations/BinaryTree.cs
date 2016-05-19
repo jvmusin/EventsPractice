@@ -23,7 +23,7 @@ namespace Events.Implementations
         {
         }
 
-        public virtual bool Add(T value)
+        public bool Add(T value)
         {
             if (value == null)
                 throw new ArgumentNullException(nameof(value));
@@ -34,7 +34,7 @@ namespace Events.Implementations
 
         public bool Contains(T value) => Contains(root, value);
 
-        private BinaryTreeNode<T> Add(BinaryTreeNode<T> current, T value, out bool added)
+        internal virtual BinaryTreeNode<T> Add(BinaryTreeNode<T> current, T value, out bool added)
         {
             if (current == null)
             {
@@ -62,18 +62,14 @@ namespace Events.Implementations
             }
             return false;
         }
-        
-        public T this[int index] {
-            get
-            {
-                if (index < 0 || index >= root.Size)
-                    throw new ArgumentOutOfRangeException(nameof(index));
-                return GetElementAt(index);
-            }
-        }
+
+        public T this[int index] => GetElementAt(index);
 
         private T GetElementAt(int index)
         {
+            if (index < 0 || index >= root.Size)
+                throw new ArgumentOutOfRangeException(nameof(index));
+
             var current = root;
             while (true)
             {

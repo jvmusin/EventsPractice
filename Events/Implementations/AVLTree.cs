@@ -1,44 +1,44 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Events.Interfaces;
-
-namespace Events.Implementations
+﻿namespace Events.Implementations
 {
     public class AVLTree<T> : BinaryTree<T>
     {
-        public override bool Add(T value)
+        internal override BinaryTreeNode<T> Add(BinaryTreeNode<T> current, T value, out bool added)
         {
-            var added = base.Add(value);
+            if (current == null)
+            {
+                added = true;
+                return new BinaryTreeNode<T>(value);
+            }
 
+            var cmp = Comparer.Compare(value, current.Value);
+            if (cmp < 0) current.left = Add(current.left, value, out added);
+            else if (cmp > 0) current.right = Add(current.right, value, out added);
+            else added = false;
 
-
-            return added;
+            return Balance(current);
         }
 
-        private BinaryTreeNode<T> RotateRight(BinaryTreeNode<T> p)
+        private static BinaryTreeNode<T> RotateRight(BinaryTreeNode<T> p)
         {
             var q = p.left;
             p.left = q.right;
             q.right = p;
-            p.UpdateHeight();
-            q.UpdateHeight();
+            p.Update();
+            q.Update();
             return q;
         }
 
-        private BinaryTreeNode<T> RotateLeft(BinaryTreeNode<T> q)
+        private static BinaryTreeNode<T> RotateLeft(BinaryTreeNode<T> q)
         {
             var p = q.right;
             q.right = p.left;
-            q.left = q;
-            q.UpdateHeight();
-            p.UpdateHeight();
+            p.left = q;
+            q.Update();
+            p.Update();
             return p;
         }
 
-        private BinaryTreeNode<T> Balance(BinaryTreeNode<T> p)
+        private static BinaryTreeNode<T> Balance(BinaryTreeNode<T> p)
         {
             p.UpdateHeight();
             switch (p.GetBalanceFactor())
@@ -52,7 +52,7 @@ namespace Events.Implementations
                         p.left = RotateLeft(p.left);
                     return RotateRight(p);
                 default:
-                    return p;
+                    return p.Update();
             }
         }
     }

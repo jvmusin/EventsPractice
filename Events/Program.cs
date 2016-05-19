@@ -8,7 +8,7 @@ namespace Events
     {
         public static void Main(string[] args)
         {
-            var tree = new BinaryTree<int>();
+            var tree = new AVLTree<int>();
             var treeVales = new[]
             {
                 8,

@@ -65,6 +65,7 @@
     <Compile Include="Implementations\BinaryTreeNode.cs" />
     <Compile Include="Interfaces\IBinaryTreeNode.cs" />
     <Compile Include="RandomExtensions.cs" />
+    <Compile Include="Tests\AVLTree_Should.cs" />
     <Compile Include="Tests\BinaryTree_Should.cs" />
     <Compile Include="Interfaces\IBinaryTree.cs" />
     <Compile Include="Program.cs" />

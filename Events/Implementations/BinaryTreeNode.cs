@@ -18,7 +18,7 @@ namespace Events.Implementations
         public BinaryTreeNode(T value)
         {
             Value = value;
-            Size = 1;
+            Size = Height = 1;
         }
 
         public void UpdateSize()
@@ -31,10 +31,11 @@ namespace Events.Implementations
             Height = Math.Max(left.GetHeight(), right.GetHeight()) + 1;
         }
 
-        public void Update()
+        public BinaryTreeNode<T> Update()
         {
             UpdateSize();
             UpdateHeight();
+            return this;
         }
     }
 }
