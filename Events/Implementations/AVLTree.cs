@@ -1,11 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using Events.Interfaces;
 
 namespace Events.Implementations
 {
+    // ReSharper disable once InconsistentNaming
     public class AVLTree<T> : BinaryTree<T>
     {
-        protected new AVLTreeNode<T> root;
+        private AVLTreeNode<T> root;
 
         public override IBinaryTreeNode<T> Root
         {
@@ -13,18 +15,22 @@ namespace Events.Implementations
             set { root = (AVLTreeNode<T>) value; }
         }
 
+        public AVLTree(IComparer<T> comparer) : base(comparer)
+        {
+        }
+
+        public AVLTree() : this(Comparer<T>.Default) { }
+
         public override bool Add(T value)
         {
             if (value == null)
                 throw new ArgumentNullException(nameof(value));
             bool added;
-            root = Add(root, value, out added);
+            Root = Add((AVLTreeNode<T>) Root, value, out added);
             return added;
         }
 
-        public override bool Contains(T value) => Contains(root, value);
-
-        private AVLTreeNode<T> Add(AVLTreeNode<T> current, T value, out bool added)
+        private IBinaryTreeNode<T> Add(AVLTreeNode<T> current, T value, out bool added)
         {
             if (current == null)
             {
@@ -81,7 +87,7 @@ namespace Events.Implementations
         private static int GetBalanceFactor(IBinaryTreeNode<T> node)
         {
             var leftHeight = ((AVLTreeNode<T>) node.Left).GetHeightSafe();
-            var rightHeight = ((AVLTreeNode<T>)node.Right).GetHeightSafe();
+            var rightHeight = ((AVLTreeNode<T>) node.Right).GetHeightSafe();
             return rightHeight - leftHeight;
         }
     }

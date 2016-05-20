@@ -7,7 +7,7 @@ namespace Events.Implementations
 {
     public class BinaryTree<T> : IBinaryTree<T>
     {
-        protected BinaryTreeNode<T> root;
+        private BinaryTreeNode<T> root;
 
         public virtual IBinaryTreeNode<T> Root
         {
@@ -37,9 +37,9 @@ namespace Events.Implementations
             return added;
         }
 
-        public virtual bool Contains(T value) => Contains(root, value);
+        public bool Contains(T value) => Contains(Root, value);
 
-        protected BinaryTreeNode<T> Add(BinaryTreeNode<T> current, T value, out bool added)
+        protected IBinaryTreeNode<T> Add(BinaryTreeNode<T> current, T value, out bool added)
         {
             if (current == null)
             {
@@ -55,7 +55,7 @@ namespace Events.Implementations
             return current.Update();
         }
 
-        protected bool Contains(IBinaryTreeNode<T> current, T value)
+        private bool Contains(IBinaryTreeNode<T> current, T value)
         {
             while (current != null)
             {

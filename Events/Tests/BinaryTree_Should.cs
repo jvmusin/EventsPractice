@@ -34,6 +34,15 @@ namespace Events.Tests
         }
 
         [Test]
+        public void AddManyItemsCorrectly()
+        {
+            foreach (var value in Enumerable.Range(0, 1000))
+                tree.Add(value).Should().BeTrue();
+            foreach (var value in Enumerable.Range(0, 1000))
+                tree.Contains(value).Should().BeTrue();
+        }
+
+        [Test]
         public void NotAddItemsTwiceOrMore()
         {
             tree.Add(42).Should().BeTrue();
