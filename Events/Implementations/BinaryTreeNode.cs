@@ -7,8 +7,8 @@ namespace Events.Implementations
         public T Value { get; }
         public int Size { get; set; }
 
-        public BinaryTreeNode<T> left;
-        public BinaryTreeNode<T> right;
+        private BinaryTreeNode<T> left;
+        private BinaryTreeNode<T> right;
 
         public virtual IBinaryTreeNode<T> Left
         {
@@ -19,7 +19,7 @@ namespace Events.Implementations
         public virtual IBinaryTreeNode<T> Right
         {
             get { return right; }
-            set { left = (BinaryTreeNode<T>) value; }
+            set { right = (BinaryTreeNode<T>) value; }
         }
 
         public BinaryTreeNode(T value)
@@ -30,13 +30,19 @@ namespace Events.Implementations
 
         private void UpdateSize()
         {
-            Size = left.GetSize() + right.GetSize() + 1;
+            Size = GetSize(Left) + GetSize(Right) + 1;
         }
 
         public virtual BinaryTreeNode<T> Update()
         {
             UpdateSize();
             return this;
+        }
+
+        private static int GetSize(IBinaryTreeNode<T> node)
+        {
+            var n = node as BinaryTreeNode<T>;
+            return n?.Size ?? 0;
         }
     }
 }

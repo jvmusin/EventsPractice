@@ -8,19 +8,19 @@ namespace Events.Implementations
     {
         public int Height { get; set; }
 
-        public new AVLTreeNode<T> left;
-        public new AVLTreeNode<T> right;
+        private AVLTreeNode<T> left;
+        private AVLTreeNode<T> right;
 
         public override IBinaryTreeNode<T> Left
         {
             get { return left; }
-            set { base.left = left = (AVLTreeNode<T>) value; }
+            set { left = (AVLTreeNode<T>) value; }
         }
 
         public override IBinaryTreeNode<T> Right
         {
             get { return right; }
-            set { base.right = right = (AVLTreeNode<T>) value; }
+            set { right = (AVLTreeNode<T>) value; }
         }
 
         public AVLTreeNode(T value) : base(value)
@@ -29,7 +29,7 @@ namespace Events.Implementations
 
         private void UpdateHeight()
         {
-            Height = Math.Max(left.GetHeight(), right.GetHeight()) + 1;
+            Height = Math.Max(GetHeight(Left), GetHeight(Right)) + 1;
         }
 
         public new AVLTreeNode<T> Update()
@@ -37,6 +37,12 @@ namespace Events.Implementations
             base.Update();
             UpdateHeight();
             return this;
+        }
+
+        private static int GetHeight(IBinaryTreeNode<T> node)
+        {
+            var n = node as AVLTreeNode<T>;
+            return n?.Height ?? 0;
         }
     }
 }

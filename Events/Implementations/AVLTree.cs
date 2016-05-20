@@ -1,10 +1,17 @@
 ﻿using System;
+using Events.Interfaces;
 
 namespace Events.Implementations
 {
     public class AVLTree<T> : BinaryTree<T>
     {
-        protected new AVLTreeNode<T> root; 
+        protected new AVLTreeNode<T> root;
+
+        public override IBinaryTreeNode<T> Root
+        {
+            get { return root; }
+            set { root = (AVLTreeNode<T>) value; }
+        }
 
         public override bool Add(T value)
         {
@@ -26,8 +33,8 @@ namespace Events.Implementations
             }
 
             var cmp = Comparer.Compare(value, current.Value);
-            if (cmp < 0) current.left = Add(current.left, value, out added);
-            else if (cmp > 0) current.right = Add(current.right, value, out added);
+            if      (cmp < 0) current.Left  = Add((AVLTreeNode<T>) current.Left,  value, out added);
+            else if (cmp > 0) current.Right = Add((AVLTreeNode<T>) current.Right, value, out added);
             else added = false;
 
             return Balance(current);
@@ -35,9 +42,9 @@ namespace Events.Implementations
 
         private static AVLTreeNode<T> RotateRight(AVLTreeNode<T> p)
         {
-            var q = p.left;
-            p.left = q.right;
-            q.right = p;
+            var q = (AVLTreeNode<T>) p.Left;
+            p.Left = q.Right;
+            q.Right = p;
             p.Update();
             q.Update();
             return q;
@@ -45,9 +52,9 @@ namespace Events.Implementations
 
         private static AVLTreeNode<T> RotateLeft(AVLTreeNode<T> q)
         {
-            var p = q.right;
-            q.right = p.left;
-            p.left = q;
+            var p = (AVLTreeNode<T>) q.Right;
+            q.Right = p.Left;
+            p.Left = q;
             q.Update();
             p.Update();
             return p;
@@ -56,19 +63,26 @@ namespace Events.Implementations
         private static AVLTreeNode<T> Balance(AVLTreeNode<T> p)
         {
             p.Update();
-            switch (p.GetBalanceFactor())
+            switch (GetBalanceFactor(p))
             {
                 case 2:
-                    if (p.right.GetBalanceFactor() < 0)
-                        p.right = RotateRight(p.right);
+                    if (GetBalanceFactor(p.Right) < 0)
+                        p.Right = RotateRight((AVLTreeNode<T>) p.Right);
                     return RotateLeft(p);
                 case -2:
-                    if (p.left.GetBalanceFactor() > 0)
-                        p.left = RotateLeft(p.left);
+                    if (GetBalanceFactor(p.Left) > 0)
+                        p.Left = RotateLeft((AVLTreeNode<T>) p.Left);
                     return RotateRight(p);
                 default:
                     return p.Update();
             }
+        }
+
+        private static int GetBalanceFactor(IBinaryTreeNode<T> node)
+        {
+            var leftHeight = ((AVLTreeNode<T>) node.Left).GetHeightSafe();
+            var rightHeight = ((AVLTreeNode<T>)node.Right).GetHeightSafe();
+            return rightHeight - leftHeight;
         }
     }
 }

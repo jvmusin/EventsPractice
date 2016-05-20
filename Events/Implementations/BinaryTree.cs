@@ -9,7 +9,7 @@ namespace Events.Implementations
     {
         protected BinaryTreeNode<T> root;
 
-        public IBinaryTreeNode<T> Root
+        public virtual IBinaryTreeNode<T> Root
         {
             get { return root; }
             set { root = (BinaryTreeNode<T>) value; }
@@ -33,7 +33,7 @@ namespace Events.Implementations
             if (value == null)
                 throw new ArgumentNullException(nameof(value));
             bool added;
-            root = Add(root, value, out added);
+            Root = Add((BinaryTreeNode<T>) Root, value, out added);
             return added;
         }
 
@@ -48,8 +48,8 @@ namespace Events.Implementations
             }
 
             var cmp = Comparer.Compare(value, current.Value);
-            if      (cmp < 0) current.left  = Add(current.left,  value, out added);
-            else if (cmp > 0) current.right = Add(current.right, value, out added);
+            if      (cmp < 0) current.Left  = Add((BinaryTreeNode<T>) current.Left,  value, out added);
+            else if (cmp > 0) current.Right = Add((BinaryTreeNode<T>) current.Right, value, out added);
             else added = false;
             
             return current.Update();
@@ -71,23 +71,25 @@ namespace Events.Implementations
 
         public T GetElementAt(int index)
         {
-            if (index < 0 || index >= root.Size)
+            var nodesCount = ((BinaryTreeNode<T>) Root).Size;
+            if (index < 0 || index >= nodesCount)
                 throw new ArgumentOutOfRangeException(nameof(index));
 
-            var current = root;
+            var current = Root;
             while (true)
             {
-                var currentIndex = current.left?.Size ?? 0;
+                var leftNode = (BinaryTreeNode<T>) current.Left;
+                var currentIndex = leftNode?.Size ?? 0;
                 if (currentIndex == index) return current.Value;
 
                 if (index < currentIndex)
                 {
-                    current = current.left;
+                    current = current.Left;
                 }
                 else
                 {
                     index -= currentIndex + 1;
-                    current = current.right;
+                    current = current.Right;
                 }
             }
         }
