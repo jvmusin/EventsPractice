@@ -1,14 +1,14 @@
-﻿using Events.Interfaces;
+﻿using Events.Implementations;
 
 namespace Events
 {
-    public static class AVLTreeExtensions
+    internal static class AVLTreeExtensions
     {
-        public static int GetHeight<T>(this IBinaryTreeNode<T> node) => node?.Height ?? 0;
+        public static int GetHeight<T>(this AVLTreeNode<T> node) => node?.Height ?? 0;
 
-        public static int GetSize<T>(this IBinaryTreeNode<T> node) => node?.Size ?? 0;
+        public static int GetSize<T>(this BinaryTreeNode<T> node) => node?.Size ?? 0;
 
-        public static int GetBalanceFactor<T>(this IBinaryTreeNode<T> node)
-            => node.Right.GetHeight() - node.Left.GetHeight();
+        public static int GetBalanceFactor<T>(this AVLTreeNode<T> node)
+            => node.right.GetHeight() - node.left.GetHeight();
     }
 }

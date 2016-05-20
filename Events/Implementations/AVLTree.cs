@@ -1,13 +1,28 @@
-﻿namespace Events.Implementations
+﻿using System;
+
+namespace Events.Implementations
 {
     public class AVLTree<T> : BinaryTree<T>
     {
-        internal override BinaryTreeNode<T> Add(BinaryTreeNode<T> current, T value, out bool added)
+        protected new AVLTreeNode<T> root; 
+
+        public override bool Add(T value)
+        {
+            if (value == null)
+                throw new ArgumentNullException(nameof(value));
+            bool added;
+            root = Add(root, value, out added);
+            return added;
+        }
+
+        public override bool Contains(T value) => Contains(root, value);
+
+        private AVLTreeNode<T> Add(AVLTreeNode<T> current, T value, out bool added)
         {
             if (current == null)
             {
                 added = true;
-                return new BinaryTreeNode<T>(value);
+                return new AVLTreeNode<T>(value);
             }
 
             var cmp = Comparer.Compare(value, current.Value);
@@ -18,7 +33,7 @@
             return Balance(current);
         }
 
-        private static BinaryTreeNode<T> RotateRight(BinaryTreeNode<T> p)
+        private static AVLTreeNode<T> RotateRight(AVLTreeNode<T> p)
         {
             var q = p.left;
             p.left = q.right;
@@ -28,7 +43,7 @@
             return q;
         }
 
-        private static BinaryTreeNode<T> RotateLeft(BinaryTreeNode<T> q)
+        private static AVLTreeNode<T> RotateLeft(AVLTreeNode<T> q)
         {
             var p = q.right;
             q.right = p.left;
@@ -38,9 +53,9 @@
             return p;
         }
 
-        private static BinaryTreeNode<T> Balance(BinaryTreeNode<T> p)
+        private static AVLTreeNode<T> Balance(AVLTreeNode<T> p)
         {
-            p.UpdateHeight();
+            p.Update();
             switch (p.GetBalanceFactor())
             {
                 case 2:

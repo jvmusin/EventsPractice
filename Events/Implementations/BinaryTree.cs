@@ -8,7 +8,12 @@ namespace Events.Implementations
     public class BinaryTree<T> : IBinaryTree<T>
     {
         protected BinaryTreeNode<T> root;
-        public IBinaryTreeNode<T> Root => root;
+
+        public IBinaryTreeNode<T> Root
+        {
+            get { return root; }
+            set { root = (BinaryTreeNode<T>) value; }
+        }
 
         public IComparer<T> Comparer { get; }
 
@@ -23,7 +28,7 @@ namespace Events.Implementations
         {
         }
 
-        public bool Add(T value)
+        public virtual bool Add(T value)
         {
             if (value == null)
                 throw new ArgumentNullException(nameof(value));
@@ -32,9 +37,9 @@ namespace Events.Implementations
             return added;
         }
 
-        public bool Contains(T value) => Contains(root, value);
+        public virtual bool Contains(T value) => Contains(root, value);
 
-        internal virtual BinaryTreeNode<T> Add(BinaryTreeNode<T> current, T value, out bool added)
+        protected BinaryTreeNode<T> Add(BinaryTreeNode<T> current, T value, out bool added)
         {
             if (current == null)
             {
@@ -43,29 +48,28 @@ namespace Events.Implementations
             }
 
             var cmp = Comparer.Compare(value, current.Value);
-            if (cmp < 0) current.left = Add(current.left, value, out added);
+            if      (cmp < 0) current.left  = Add(current.left,  value, out added);
             else if (cmp > 0) current.right = Add(current.right, value, out added);
             else added = false;
-
-            current.Update();
-            return current;
+            
+            return current.Update();
         }
 
-        private bool Contains(BinaryTreeNode<T> current, T value)
+        protected bool Contains(IBinaryTreeNode<T> current, T value)
         {
             while (current != null)
             {
                 var cmp = Comparer.Compare(value, current.Value);
                 if (cmp == 0) return true;
-                if (cmp < 0) current = current.left;
-                if (cmp > 0) current = current.right;
+                if (cmp < 0) current = current.Left;
+                if (cmp > 0) current = current.Right;
             }
             return false;
         }
 
         public T this[int index] => GetElementAt(index);
 
-        private T GetElementAt(int index)
+        public T GetElementAt(int index)
         {
             if (index < 0 || index >= root.Size)
                 throw new ArgumentOutOfRangeException(nameof(index));
@@ -87,7 +91,6 @@ namespace Events.Implementations
                 }
             }
         }
-
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
         public IEnumerator<T> GetEnumerator() => new BinaryTreeEnumerator<T>(this);
