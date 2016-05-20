@@ -4,13 +4,13 @@ using Events.Interfaces;
 
 namespace Events.Implementations
 {
-    public class BinaryTreeEnumerator<T> : IEnumerator<T>
+    internal class BinaryTreeEnumerator<T> : IEnumerator<T>
     {
-        private readonly IBinaryTree<T> tree; 
+        private readonly IBinaryTree<T> tree;
         private IBinaryTreeNode<T> lastNode;
         private bool finished;
         private readonly ISet<IBinaryTreeNode<T>> visited;
-        private readonly Stack<IBinaryTreeNode<T>> path; 
+        private readonly Stack<IBinaryTreeNode<T>> path;
 
         public BinaryTreeEnumerator(IBinaryTree<T> tree)
         {
@@ -41,12 +41,11 @@ namespace Events.Implementations
             }
 
             GoToFirstUnusedParent();
-            if (lastNode == null)
-            {
-                finished = true;
-                return false;
-            }
-            return SaveCurrentNode();
+            if (lastNode != null)
+                return SaveCurrentNode();
+
+            finished = true;
+            return false;
         }
 
         private bool SaveCurrentNode()
@@ -71,13 +70,13 @@ namespace Events.Implementations
 
         private void GoToFirstUnusedParent()
         {
-//            while (lastNode != null && visited.Contains(lastNode))
-//                lastNode = lastNode.Parent;
             while (visited.Contains(lastNode) && path.Count > 1)
             {
                 path.Pop();
                 lastNode = path.Peek();
             }
+
+            //  We enumerated all nodes in tree
             if (visited.Contains(lastNode))
                 lastNode = null;
         }

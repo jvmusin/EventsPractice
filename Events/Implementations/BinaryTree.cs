@@ -7,7 +7,7 @@ namespace Events.Implementations
 {
     public class BinaryTree<T> : IBinaryTree<T>
     {
-        internal BinaryTreeNode<T> root;
+        protected BinaryTreeNode<T> root;
         public IBinaryTreeNode<T> Root => root;
 
         public IComparer<T> Comparer { get; }
