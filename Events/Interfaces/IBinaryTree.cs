@@ -7,8 +7,11 @@ namespace Events.Interfaces
         bool Add(T value);
         bool Contains(T value);
         bool Remove(T value);
+
         IBinaryTreeNode<T> Root { get; }
+
         int Size { get; }
+        bool Empty { get; }
         T this[int index] { get; }
     }
 }

@@ -29,7 +29,7 @@ namespace Events.Implementations
 
         public bool MoveNext()
         {
-            if (finished || tree.Root == null)
+            if (finished || tree.Empty)
                 return false;
 
             if (lastNode == null)

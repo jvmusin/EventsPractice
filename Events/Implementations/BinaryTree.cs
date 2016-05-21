@@ -17,6 +17,8 @@ namespace Events.Implementations
 
         public virtual int Size => ((BinaryTreeNode<T>) Root)?.Size ?? 0;
 
+        public virtual bool Empty => Size == 0;
+
         public IComparer<T> Comparer { get; }
 
         public BinaryTree(IComparer<T> comparer)
