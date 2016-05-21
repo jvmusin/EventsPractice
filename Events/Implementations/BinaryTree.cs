@@ -15,6 +15,8 @@ namespace Events.Implementations
             set { root = (BinaryTreeNode<T>) value; }
         }
 
+        public virtual int Size => ((BinaryTreeNode<T>) Root)?.Size ?? 0;
+
         public IComparer<T> Comparer { get; }
 
         public BinaryTree(IComparer<T> comparer)
@@ -38,6 +40,11 @@ namespace Events.Implementations
         }
 
         public bool Contains(T value) => Contains(Root, value);
+
+        public virtual bool Remove(T value)
+        {
+            throw new NotImplementedException();
+        }
 
         private BinaryTreeNode<T> Add(BinaryTreeNode<T> current, T value, out bool added)
         {

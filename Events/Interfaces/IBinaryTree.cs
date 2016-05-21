@@ -6,7 +6,9 @@ namespace Events.Interfaces
     {
         bool Add(T value);
         bool Contains(T value);
+        bool Remove(T value);
         IBinaryTreeNode<T> Root { get; }
+        int Size { get; }
         T this[int index] { get; }
     }
 }
