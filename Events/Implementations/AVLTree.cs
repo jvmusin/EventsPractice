@@ -30,7 +30,7 @@ namespace Events.Implementations
             return added;
         }
 
-        private IBinaryTreeNode<T> Add(AVLTreeNode<T> current, T value, out bool added)
+        private AVLTreeNode<T> Add(AVLTreeNode<T> current, T value, out bool added)
         {
             if (current == null)
             {

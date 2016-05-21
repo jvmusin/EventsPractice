@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Events.Interfaces;
 
@@ -14,6 +15,9 @@ namespace Events.Implementations
 
         public BinaryTreeEnumerator(IBinaryTree<T> tree)
         {
+            if (tree == null)
+                throw new ArgumentNullException(nameof(tree));
+
             this.tree = tree;
             visited = new HashSet<IBinaryTreeNode<T>>();
             path = new Stack<IBinaryTreeNode<T>>();
@@ -25,7 +29,7 @@ namespace Events.Implementations
 
         public bool MoveNext()
         {
-            if (finished)
+            if (finished || tree.Root == null)
                 return false;
 
             if (lastNode == null)
@@ -78,12 +82,16 @@ namespace Events.Implementations
 
             //  We enumerated all nodes in tree
             if (visited.Contains(lastNode))
+            {
                 lastNode = null;
+                Current = default(T);
+            }
         }
 
         public void Reset()
         {
             lastNode = null;
+            Current = default(T);
             finished = false;
             visited.Clear();
         }

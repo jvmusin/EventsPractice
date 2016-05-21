@@ -39,7 +39,7 @@ namespace Events.Implementations
 
         public bool Contains(T value) => Contains(Root, value);
 
-        protected IBinaryTreeNode<T> Add(BinaryTreeNode<T> current, T value, out bool added)
+        private BinaryTreeNode<T> Add(BinaryTreeNode<T> current, T value, out bool added)
         {
             if (current == null)
             {
@@ -79,7 +79,7 @@ namespace Events.Implementations
             while (true)
             {
                 var leftNode = (BinaryTreeNode<T>) current.Left;
-                var currentIndex = leftNode?.Size ?? 0;
+                var currentIndex = leftNode.GetSizeSafe();
                 if (currentIndex == index) return current.Value;
 
                 if (index < currentIndex)
