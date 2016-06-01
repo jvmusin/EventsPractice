@@ -1,5 +1,6 @@
 ﻿using System;
 using Events.Interfaces;
+using Events.Utilities;
 
 namespace Events.Implementations
 {
@@ -27,22 +28,18 @@ namespace Events.Implementations
         {
         }
 
-        private void UpdateHeight()
+        private int CalculateSubtreeHeight()
         {
-            Height = Math.Max(GetHeight(Left), GetHeight(Right)) + 1;
+            var leftSubtreeHeight  = ((AVLTreeNode<T>) Left ).GetHeightSafe();
+            var rightSubtreeHeight = ((AVLTreeNode<T>) Right).GetHeightSafe();
+            return Math.Max(leftSubtreeHeight, rightSubtreeHeight) + 1;
         }
 
         public new AVLTreeNode<T> Update()
         {
             base.Update();
-            UpdateHeight();
+            Height = CalculateSubtreeHeight();
             return this;
-        }
-
-        private static int GetHeight(IBinaryTreeNode<T> node)
-        {
-            var n = node as AVLTreeNode<T>;
-            return n?.Height ?? 0;
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Events.Interfaces;
+using Events.Utilities;
 
 namespace Events.Implementations
 {
@@ -66,21 +67,21 @@ namespace Events.Implementations
             return p;
         }
 
-        private static AVLTreeNode<T> Balance(AVLTreeNode<T> p)
+        private static AVLTreeNode<T> Balance(AVLTreeNode<T> node)
         {
-            p.Update();
-            switch (GetBalanceFactor(p))
+            node.Update();
+            switch (GetBalanceFactor(node))
             {
                 case 2:
-                    if (GetBalanceFactor(p.Right) < 0)
-                        p.Right = RotateRight((AVLTreeNode<T>) p.Right);
-                    return RotateLeft(p);
+                    if (GetBalanceFactor(node.Right) < 0)
+                        node.Right = RotateRight((AVLTreeNode<T>) node.Right);
+                    return RotateLeft(node);
                 case -2:
-                    if (GetBalanceFactor(p.Left) > 0)
-                        p.Left = RotateLeft((AVLTreeNode<T>) p.Left);
-                    return RotateRight(p);
+                    if (GetBalanceFactor(node.Left) > 0)
+                        node.Left = RotateLeft((AVLTreeNode<T>) node.Left);
+                    return RotateRight(node);
                 default:
-                    return p.Update();
+                    return node.Update();
             }
         }
 

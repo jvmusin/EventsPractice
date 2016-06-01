@@ -1,4 +1,6 @@
-﻿namespace Events.Implementations
+﻿using Events.Implementations;
+
+namespace Events.Utilities
 {
     public static class TreeNodeExtensions
     {

@@ -1,4 +1,5 @@
 ﻿using Events.Interfaces;
+using Events.Utilities;
 
 namespace Events.Implementations
 {
@@ -28,21 +29,17 @@ namespace Events.Implementations
             Size = 1;
         }
 
-        private void UpdateSize()
+        private int CalculateSubtreeSize()
         {
-            Size = GetSize(Left) + GetSize(Right) + 1;
+            var leftSubtreeSize  = ((BinaryTreeNode<T>) Left ).GetSizeSafe();
+            var rightSubtreeSize = ((BinaryTreeNode<T>) Right).GetSizeSafe();
+            return leftSubtreeSize + rightSubtreeSize + 1;
         }
 
         public virtual BinaryTreeNode<T> Update()
         {
-            UpdateSize();
+            Size = CalculateSubtreeSize();
             return this;
-        }
-
-        private static int GetSize(IBinaryTreeNode<T> node)
-        {
-            var n = node as BinaryTreeNode<T>;
-            return n?.Size ?? 0;
         }
     }
 }

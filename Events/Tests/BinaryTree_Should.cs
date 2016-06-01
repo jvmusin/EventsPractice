@@ -11,7 +11,7 @@ namespace Events.Tests
     public class BinaryTree_Should : TestBase
     {
         private BinaryTree<int> tree;
-
+        
         [SetUp]
         public void SetUp()
         {
@@ -36,9 +36,10 @@ namespace Events.Tests
         [Test]
         public void AddManyItemsCorrectly()
         {
-            foreach (var value in Enumerable.Range(0, 1000))
+            var values = Enumerable.Range(0, 1000).ToList();
+            foreach (var value in values)
                 tree.Add(value).Should().BeTrue();
-            foreach (var value in Enumerable.Range(0, 1000))
+            foreach (var value in values)
                 tree.Contains(value).Should().BeTrue();
         }
 
@@ -78,36 +79,7 @@ namespace Events.Tests
         }
 
         #endregion
-
-        #region Enumerating tests
-
-        [Test]
-        public void EnumerateValuesCorrectly()
-        {
-            BuildSampleTree(tree);
-            Console.WriteLine(tree.ToList());
-        }
-
-        [Test]
-        public void ReturnAllValues_OnEnumerating()
-        {
-            var elements = GetRandomDistinctInts(100).ToList();
-            foreach (var element in elements)
-                tree.Add(element);
-            tree.ShouldBeEquivalentTo(elements);
-        }
-
-        [Test]
-        public void EnumerateTree_InAscendingOrder()
-        {
-            var elements = GetRandomDistinctInts(100500).ToList();
-            foreach (var element in elements)
-                tree.Add(element);
-            tree.Should().BeInAscendingOrder();
-        }
-
-        #endregion
-
+        
         #region By index accessing tests
 
         [Test]
@@ -115,7 +87,7 @@ namespace Events.Tests
         {
             foreach (var x in GetRandomDistinctInts(100))
                 tree.Add(x);
-            Action access = () => { var t = tree[Rnd.Next(int.MinValue, 0)]; };
+            Action access = () => { var t = tree[rnd.Next(int.MinValue, 0)]; };
             access.ShouldThrow<Exception>();
         }
 
@@ -124,7 +96,7 @@ namespace Events.Tests
         {
             foreach (var x in GetRandomDistinctInts(100))
                 tree.Add(x);
-            Action access = () => { var t = tree[Rnd.Next(100, int.MaxValue)]; };
+            Action access = () => { var t = tree[rnd.Next(100, int.MaxValue)]; };
             access.ShouldThrow<Exception>();
         }
 
@@ -139,9 +111,9 @@ namespace Events.Tests
 
         #endregion
 
-        #region Preformance tests
+        #region Performance tests
 
-        [Test, Timeout(6000), TestCaseSource(nameof(PerfrormanceTestCases))]
+        [Test, Timeout(10000), TestCaseSource(nameof(PerfrormanceTestCases))]
         public void WorkFast_WithManyRandomElements(IList<int> elements)
         {
             foreach (var element in elements)
@@ -150,9 +122,15 @@ namespace Events.Tests
                 tree.Contains(element).Should().BeTrue();
         }
 
-        private IEnumerable<int> GetRandomDistinctInts(int count)
+        [Test, Timeout(1000)]
+        public void WorkFast_WithAscendingSequence()
         {
-            return Rnd.Ints().Distinct().Take(count);
+//            var tree = new AVLTree<int>();
+            var elements = Enumerable.Range(0, (int) 1e4).ToList();
+            foreach (var element in elements)
+                tree.Add(element);
+            foreach (var element in elements)
+                tree.Contains(element).Should().BeTrue();
         }
 
         private IEnumerable<TestCaseData> PerfrormanceTestCases

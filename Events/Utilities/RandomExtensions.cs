@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Events.Tests
+namespace Events.Utilities
 {
     public static class RandomExtensions
     {
